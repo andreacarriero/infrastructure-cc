@@ -9,11 +9,15 @@ class Node(db.Model):
     datacenter_id = db.Column(db.ForeignKey(Datacenter.id))
 
     def serialize(self):
+        datacenter = Datacenter.query.filter_by(id = self.datacenter_id).first()
+        ips = NodeIP.query.filter_by(node_id = self.id).all()
+
         return {
             'id': self.id,
             'name': self.name,
             'type': self.type,
-            'datacenter_id': self.datacenter_id
+            'datacenter': datacenter.serialize(),
+            'ips': [ip.serialize() for ip in ips]
         }
 
 class NodeIP(db.Model):
