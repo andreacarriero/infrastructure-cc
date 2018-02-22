@@ -1,3 +1,5 @@
+from sqlalchemy import desc
+
 from toolbox.database import db
 
 from modules.datacenter.models import Datacenter
@@ -10,7 +12,7 @@ class Node(db.Model):
 
     def serialize(self):
         ips = NodeIP.query.filter_by(node_id = self.id).all()
-        status = NodeStatus.query.filter_by(node_id = self.id).order_by('-last_update').first()
+        status = NodeStatus.query.filter_by(node_id = self.id).order_by(desc(NodeStatus.last_update)).first()
 
         return {
             'id': self.id,
