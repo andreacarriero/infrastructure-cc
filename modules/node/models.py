@@ -9,7 +9,6 @@ class Node(db.Model):
     datacenter_id = db.Column(db.ForeignKey(Datacenter.id))
 
     def serialize(self):
-        datacenter = Datacenter.query.filter_by(id = self.datacenter_id).first()
         ips = NodeIP.query.filter_by(node_id = self.id).all()
         status = NodeStatus.query.filter_by(node_id = self.id).order_by('-last_update').first()
 
@@ -17,7 +16,7 @@ class Node(db.Model):
             'id': self.id,
             'name': self.name,
             'type': self.type,
-            'datacenter': (lambda datacenter: datacenter.serialize() if datacenter else None)(datacenter),
+            'datacenter_id': self.datacenter_id,
             'ips': [ip.serialize() for ip in ips],
             'status': (lambda status: status.serialize() if status else None)(status)
         }

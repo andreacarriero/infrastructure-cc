@@ -14,4 +14,4 @@ class Datacenter(db.Model):
             'location': self.location,
             'latitude': self.latitude,
             'longitude': self.longitude
-        }
+        }        

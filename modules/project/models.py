@@ -8,14 +8,13 @@ class Project(db.Model):
     name = db.Column(db.String(100))
 
     def serialize(self):
-        user = User.query.filter_by(id=self.user_id).first()
         nodes_links = ResourceNodeLink.query.filter_by(project_id=self.id).all()
 
         return {
             'id': self.id,
-            'user': (lambda user: user.serialize() if user else None)(user),
+            'user_id': self.user_id,
             'name': self.name,
-            'nodes': [link.serialize_node() for link in nodes_links]
+            'nodes_ids': [link.node_id for link in nodes_links]
         }
 
 class ResourceNodeLink(db.Model):
@@ -23,13 +22,17 @@ class ResourceNodeLink(db.Model):
     project_id = db.Column(db.ForeignKey(Project.id))
     node_id = db.Column(db.ForeignKey(Node.id))
 
-    def serialize_node(self):
-        node = Node.query.filter_by(id=self.node_id).first()
-        return node.serialize()
-
     def serialize(self):
         return {
             'id': self.id,
             'project_id': self.project_id,
             'node_id': self.node_id
         }
+    
+    def serialize_node(self):
+        node = Node.query.filter_by(id=self.node_id).first()
+        return node.serialize()
+
+    def serialize_project(self):
+        project = Project.query.filter_by(id=self.project_id).first()
+        return project.serialize()
