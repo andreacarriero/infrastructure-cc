@@ -1,0 +1,4 @@
+{
+    "logFormatter": "[%(asctime)s] %(name)s {%(funcName)s on %(filename)s:%(lineno)d} %(levelname)s - %(message)s",
+    "logFilePath": "data/root.log"
+}
