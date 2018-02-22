@@ -21,6 +21,12 @@ app.register_blueprint(datacenter_app, url_prefix = '/datacenters')
 from modules.node.api import app as node_app
 app.register_blueprint(node_app, url_prefix = '/nodes')
 
+from modules.user.api import app as user_app
+app.register_blueprint(user_app, url_prefix = '/users')
+
+from modules.project.api import app as project_app
+app.register_blueprint(project_app, url_prefix = '/projects')
+
 # init app and db
 db.init_app(app)
 with app.app_context():
