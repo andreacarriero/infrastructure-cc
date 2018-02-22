@@ -27,6 +27,7 @@ class DatacenterResource(Resource):
     """
     
     def get(self, datacenter_id):
+        log.info("Getting datacenter ID:%d", datacenter_id)
         datacenter = Datacenter.query.filter_by(id=datacenter_id).first()
         if not datacenter:
             abort(404)

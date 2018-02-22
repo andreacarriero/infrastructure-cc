@@ -38,6 +38,8 @@ class NodeResource(Resource):
     """
 
     def get(self, node_id):
+        log.info("Getting node ID:%d", node_id)
+
         node = Node.query.filter_by(id=node_id).first()
         if not node:
             abort(404)

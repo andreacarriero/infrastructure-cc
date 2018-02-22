@@ -28,6 +28,8 @@ class ProjectResource(Resource):
     """
 
     def get(self, project_id):
+        log.info("Getting project ID:%d", project_id)
+
         project = Project.query.filter_by(id=project_id).first()
         if not project:
             abort(404)

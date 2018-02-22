@@ -27,6 +27,8 @@ class UserResource(Resource):
     """
 
     def get(self, user_id):
+        log.info("Getting user ID:%d", user_id)
+
         user = User.query.filter_by(id=user_id).first()
         if not user:
             abort(404)
