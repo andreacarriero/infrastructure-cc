@@ -31,4 +31,4 @@ class IPS(Resource):
         return [ip.serialize() for ip in ips]
 
 api.add_resource(RootResource, '/', endpoint='nodes')
-api.add_resource(IPS, '/ips', endpoint='ips')
+api.add_resource(IPS, '/ips/', endpoint='ips')
