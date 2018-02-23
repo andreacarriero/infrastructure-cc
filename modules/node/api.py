@@ -69,12 +69,16 @@ class NodeResource(Resource):
 
         node_status = NodeStatus.query.filter_by(node_id = node_id).order_by(desc(NodeStatus.last_update)).first()
 
+        print(node_status.current_status, args.get('current_status'))
+
         if args.get('current_status'):
             if node_status.current_status == args.get('current_status'):
-                node_status.current_status = args.get('current_status')
                 node_status.last_update = datetime.datetime.now()
             else:
+                current_imposed_status = node_status.imposed_status
                 node_status = NodeStatus()
+                node_status.node_id = node_id
+                node_status.imposed_status = current_imposed_status
                 node_status.current_status = args.get('current_status')
                 db.session.add(node_status)
 

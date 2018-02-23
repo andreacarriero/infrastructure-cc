@@ -1,4 +1,5 @@
 from sqlalchemy import desc
+import datetime
 
 from toolbox.database import db
 
@@ -45,7 +46,7 @@ class NodeStatus(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     node_id = db.Column(db.ForeignKey(Node.id))
-    last_update = db.Column(db.DateTime, server_default=db.func.now())
+    last_update = db.Column(db.DateTime, default=datetime.datetime.now())
     imposed_status = db.Column(db.String(20))
     current_status = db.Column(db.String(20))
 
@@ -69,7 +70,7 @@ class NodeCommand(db.Model):
     STATUS_FAILED = 'failed'
 
     id = db.Column(db.Integer, primary_key=True)
-    add_date = db.Column(db.DateTime, server_default=db.func.now())
+    add_date = db.Column(db.DateTime, default=datetime.datetime.now())
     node_id = db.Column(db.ForeignKey(Node.id))
     project_command_job_id = db.Column(db.ForeignKey(ProjectCommandJob.id))
     response = db.Column(db.String(5000))

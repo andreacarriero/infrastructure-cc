@@ -48,7 +48,7 @@ class ResourceNodeLink(db.Model):
 
 class ProjectCommandJob(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    add_date = db.Column(db.DateTime, server_default=db.func.now())
+    add_date = db.Column(db.DateTime, default=datetime.datetime.now())
     project_id = db.Column(db.ForeignKey(Project.id))
     propagated = db.Column(db.Boolean, default=False)
     propagation_date = db.Column(db.DateTime)
