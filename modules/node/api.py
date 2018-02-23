@@ -4,7 +4,7 @@ from flask_restful import Api, Resource, reqparse
 
 from toolbox.logger import get_logger
 from toolbox.database import db
-from modules.node.models import Node, NodeIP, NodeCommand
+from modules.node.models import Node, NodeIP, NodeCommand, NodeStatus
 from modules.datacenter.models import Datacenter
 from modules.project.models import Project, ResourceNodeLink, ProjectCommandJob
 
@@ -53,6 +53,27 @@ class NodeResource(Resource):
             'datacenter': datacenter.serialize(),
             'hosted_projects': [link.serialize_project() for link in resource_links]
         }
+
+    def post(self, node_id):
+        log.info("Updating node ID:%d info", node_id)
+
+        node = Node.query.filter_by(id=node_id).first()
+        if not node:
+            abort(404, "Node not found")
+
+        parser = reqparse.RequestParser()
+        parser.add_argument('current_status', type=str)
+        args = parser.parse_args()
+
+        node_status = NodeStatus.query.filter_by(node_id=node_id).first()
+
+        if args.get('current_status'):
+            node_status.current_status = args.get('current_status')
+
+        db.session.commit()
+
+        return self.get(node_id)
+
 
 class NodeCommandsResource(Resource):
     """
