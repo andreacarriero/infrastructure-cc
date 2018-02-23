@@ -61,21 +61,23 @@ class NodeStatus(db.Model):
 class NodeCommand(db.Model):
     from modules.project.models import ProjectCommandJob
 
-    id = db.Column(db.Integer, primary_key=True)
-    time = db.Column(db.DateTime, server_default=db.func.now())
-    node_id = db.Column(db.ForeignKey(Node.id))
-    project_command_job_id = db.Column(db.ForeignKey(ProjectCommandJob.id))
-    response = db.Column(db.String(5000))
-    status = db.Column(db.String(100))
-
+    STATUS_SENDING = 'sending'
+    STATUS_RECEIVED = 'received'
     STATUS_PENDING = 'pending'
     STATUS_COMPLETED = 'completed'
     STATUS_ERROR = 'error'
 
+    id = db.Column(db.Integer, primary_key=True)
+    add_date = db.Column(db.DateTime, server_default=db.func.now())
+    node_id = db.Column(db.ForeignKey(Node.id))
+    project_command_job_id = db.Column(db.ForeignKey(ProjectCommandJob.id))
+    response = db.Column(db.String(5000))
+    status = db.Column(db.String(100), default=STATUS_SENDING)
+
     def serialize(self):
         return {
             'id': self.id,
-            'time': str(self.time),
+            'add_date': str(self.time),
             'node_id': self.node_id,
             'project_command_job_id': self.project_command_job_id,
             'response': self.response,

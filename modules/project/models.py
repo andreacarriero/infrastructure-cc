@@ -1,3 +1,4 @@
+import datetime
 from toolbox.database import db
 from modules.user.models import User
 from modules.node.models import Node
@@ -47,15 +48,19 @@ class ResourceNodeLink(db.Model):
 
 class ProjectCommandJob(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    time = db.Column(db.DateTime, server_default=db.func.now())
+    add_date = db.Column(db.DateTime, server_default=db.func.now())
     project_id = db.Column(db.ForeignKey(Project.id))
+    propagated = db.Column(db.Boolean, default=False)
+    propagation_date = db.Column(db.DateTime)
     cmd = db.Column(db.String(5000))
 
     def serialize(self):
         return {
             'id': self.id,
-            'time': str(self.time),
+            'add_date': str(self.time),
             'project_id': self.project_id,
+            'propagated': self.propagated,
+            'propagation_date': str(self.propagation_date),
             'cmd': self.cmd
         }
 
@@ -71,4 +76,7 @@ class ProjectCommandJob(db.Model):
             node_command.node_id = node.id
             node_command.project_command_job_id = self.id
             db.session.add(node_command)
+
+        self.propagated = True
+        self.propagation_date = datetime.datetime.now()
         db.session.commit()
