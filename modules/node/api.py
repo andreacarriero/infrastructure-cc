@@ -3,6 +3,7 @@ from flask import Blueprint, abort
 from flask_restful import Api, Resource, reqparse
 
 from toolbox.logger import get_logger
+from toolbox.database import db
 from modules.node.models import Node, NodeIP, NodeCommand
 from modules.datacenter.models import Datacenter
 from modules.project.models import Project, ResourceNodeLink, ProjectCommandJob
@@ -93,6 +94,32 @@ class NodeCommandResource(Resource):
             'command': command.serialize(),
             'project_command_job': project_command_job.serialize()
         }
+
+    def post(self, node_id, command_id):
+        log.info("Setting data for command ID:%d on node ID:%d", command_id, node_id)
+
+        parser = reqparse.RequestParser()
+        parser.add_argument('status', type=str)
+        parser.add_argument('response', type=str)
+        args = parser.parse_args()
+
+        node = Node.query.filter_by(id=node_id).first()
+        if not node:
+            abort(404, "Node not found")
+
+        command = NodeCommand.query.filter_by(id=command_id).first()
+        if not command:
+            abort(404, "Command not found")
+        
+        if args.get('status'):
+            command.status = args.get('status')
+
+        if args.get('response'):
+            command.response = args.get('response')
+
+        db.session.commit()
+
+        return self.get(node_id, command_id)
 
 api.add_resource(RootResource, '/', endpoint='nodes')
 api.add_resource(NodeResource, '/<int:node_id>', endpoint='node')
