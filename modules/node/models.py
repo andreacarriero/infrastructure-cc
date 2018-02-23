@@ -46,6 +46,9 @@ class NodeStatus(db.Model):
     imposed_status = db.Column(db.String(20))
     current_status = db.Column(db.String(20))
 
+    STATUS_ONLINE = 'online'
+    STATUS_OFFLINE = 'offline'
+
     def serialize(self):
         return {
             'id': self.id,
@@ -53,4 +56,28 @@ class NodeStatus(db.Model):
             'last_update': str(self.last_update),
             'imposed_status': self.imposed_status,
             'current_status': self.current_status
+        }
+
+class NodeCommand(db.Model):
+    from modules.project.models import ProjectCommandJob
+
+    id = db.Column(db.Integer, primary_key=True)
+    time = db.Column(db.DateTime, server_default=db.func.now())
+    node_id = db.Column(db.ForeignKey(Node.id))
+    project_command_job_id = db.Column(db.ForeignKey(ProjectCommandJob.id))
+    response = db.Column(db.String(5000))
+    status = db.Column(db.String(100))
+
+    STATUS_PENDING = 'pending'
+    STATUS_COMPLETED = 'completed'
+    STATUS_ERROR = 'error'
+
+    def serialize(self):
+        return {
+            'id': self.id,
+            'time': str(self.time),
+            'node_id': self.node_id,
+            'project_command_job_id': self.project_command_job_id,
+            'response': self.response,
+            'status': self.status
         }
