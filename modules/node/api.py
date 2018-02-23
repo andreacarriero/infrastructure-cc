@@ -1,6 +1,8 @@
 import logging
+import datetime
 from flask import Blueprint, abort
 from flask_restful import Api, Resource, reqparse
+from sqlalchemy import desc
 
 from toolbox.logger import get_logger
 from toolbox.database import db
@@ -65,10 +67,16 @@ class NodeResource(Resource):
         parser.add_argument('current_status', type=str)
         args = parser.parse_args()
 
-        node_status = NodeStatus.query.filter_by(node_id=node_id).first()
+        node_status = NodeStatus.query.filter_by(node_id = node_id).order_by(desc(NodeStatus.last_update)).first()
 
         if args.get('current_status'):
-            node_status.current_status = args.get('current_status')
+            if node_status.current_status == args.get('current_status'):
+                node_status.current_status = args.get('current_status')
+                node_status.last_update = datetime.datetime.now()
+            else:
+                node_status = NodeStatus()
+                node_status.current_status = args.get('current_status')
+                db.session.add(node_status)
 
         db.session.commit()
 
