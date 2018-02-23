@@ -3,9 +3,9 @@ from flask import Blueprint, abort
 from flask_restful import Api, Resource, reqparse
 
 from toolbox.logger import get_logger
-from modules.node.models import Node, NodeIP
+from modules.node.models import Node, NodeIP, NodeCommand
 from modules.datacenter.models import Datacenter
-from modules.project.models import Project, ResourceNodeLink
+from modules.project.models import Project, ResourceNodeLink, ProjectCommandJob
 
 log = get_logger(__name__)
 
@@ -53,6 +53,49 @@ class NodeResource(Resource):
             'hosted_projects': [link.serialize_project() for link in resource_links]
         }
 
+class NodeCommandsResource(Resource):
+    """
+    Manages node commands
+    """
+
+    def get(self, node_id):
+        log.info("Getting commands for node ID:%s", node_id)
+        node = Node.query.filter_by(id=node_id).first()
+        if not node:
+            abort(404)
+        
+        commands = NodeCommand.query.filter_by(node_id=node_id).all()
+
+        return [command.serialize() for command in commands]
+
+class NodeCommandResource(Resource):
+    """
+    Manages node command
+    """
+
+    def get(self, node_id, command_id):
+        log.info("Getting command ID:%d for node ID:%d", command_id, node_id)
+        
+        node = Node.query.filter_by(id=node_id).first()
+        if not node:
+            abort(404, "Node not found")
+        
+        command = NodeCommand.query.filter_by(id=command_id).first()
+        if not command:
+            abort(404, "Command not found")
+
+        project_command_job = ProjectCommandJob.query.filter_by(id=command.project_command_job_id).first()
+        if not project_command_job:
+            abort(404, "Project Command Job not found")
+
+        return {
+            'node': node.serialize(),
+            'command': command.serialize(),
+            'project_command_job': project_command_job.serialize()
+        }
+
 api.add_resource(RootResource, '/', endpoint='nodes')
 api.add_resource(NodeResource, '/<int:node_id>', endpoint='node')
+api.add_resource(NodeCommandsResource, '/<int:node_id>/commands/', endpoint='node_commands')
+api.add_resource(NodeCommandResource, '/<int:node_id>/commands/<int:command_id>', endpoint='node_command')
 api.add_resource(IPsResource, '/ips/', endpoint='ips')

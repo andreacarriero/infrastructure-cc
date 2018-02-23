@@ -57,7 +57,7 @@ class ProjectCommandJob(db.Model):
     def serialize(self):
         return {
             'id': self.id,
-            'add_date': str(self.time),
+            'add_date': str(self.add_date),
             'project_id': self.project_id,
             'propagated': self.propagated,
             'propagation_date': str(self.propagation_date),

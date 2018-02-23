@@ -40,14 +40,14 @@ class NodeIP(db.Model):
         }
 
 class NodeStatus(db.Model):
+    STATUS_ONLINE = 'online'
+    STATUS_OFFLINE = 'offline'
+    
     id = db.Column(db.Integer, primary_key=True)
     node_id = db.Column(db.ForeignKey(Node.id))
     last_update = db.Column(db.DateTime, server_default=db.func.now())
     imposed_status = db.Column(db.String(20))
     current_status = db.Column(db.String(20))
-
-    STATUS_ONLINE = 'online'
-    STATUS_OFFLINE = 'offline'
 
     def serialize(self):
         return {
@@ -77,7 +77,7 @@ class NodeCommand(db.Model):
     def serialize(self):
         return {
             'id': self.id,
-            'add_date': str(self.time),
+            'add_date': str(self.add_date),
             'node_id': self.node_id,
             'project_command_job_id': self.project_command_job_id,
             'response': self.response,
