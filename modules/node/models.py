@@ -42,7 +42,7 @@ class NodeIP(db.Model):
 class NodeStatus(db.Model):
     STATUS_ONLINE = 'online'
     STATUS_OFFLINE = 'offline'
-    
+
     id = db.Column(db.Integer, primary_key=True)
     node_id = db.Column(db.ForeignKey(Node.id))
     last_update = db.Column(db.DateTime, server_default=db.func.now())
@@ -66,6 +66,7 @@ class NodeCommand(db.Model):
     STATUS_PENDING = 'pending'
     STATUS_COMPLETED = 'completed'
     STATUS_ERROR = 'error'
+    STATUS_FAILED = 'failed'
 
     id = db.Column(db.Integer, primary_key=True)
     add_date = db.Column(db.DateTime, server_default=db.func.now())
