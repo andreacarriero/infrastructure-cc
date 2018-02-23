@@ -33,9 +33,17 @@ class ResourceNodeLink(db.Model):
         node = Node.query.filter_by(id=self.node_id).first()
         return node.serialize()
 
+    def get_node(self):
+        node = Node.query.filter_by(id=self.node_id).first()
+        return node
+
     def serialize_project(self):
         project = Project.query.filter_by(id=self.project_id).first()
         return project.serialize()
+
+    def get_project(self):
+        project = Project.query.filter_by(id=self.project_id).first()
+        return project
 
 class ProjectCommandJob(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -53,9 +61,11 @@ class ProjectCommandJob(db.Model):
 
     def propagate(self):
         from modules.node.models import NodeCommand
-        
+
         project = Project.query.filter_by(id=self.project_id).first()
-        nodes = [Node.query.filter_by(id=node_id) for node_id in project.nodes_ids]
+        nodes_links = ResourceNodeLink.query.filter_by(project_id=self.project_id).all()
+        nodes = [link.get_node() for link in nodes_links]
+
         for node in nodes:
             node_command = NodeCommand()
             node_command.node_id = node.id
