@@ -7,6 +7,18 @@ class Datacenter(db.Model):
     latitude = db.Column(db.String(20))
     longitude = db.Column(db.String(20))
 
+    def __init__(self, name, location):
+        self.name = name
+        self.location = location
+
+    def create(self):
+        db.session.add(self)
+        db.session.commit()
+
+    @staticmethod
+    def get(id):
+        return Datacenter.query.filter_by(id=id).first()
+
     def serialize(self):
         return {
             'id': self.id,

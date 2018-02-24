@@ -11,6 +11,23 @@ class Node(db.Model):
     type = db.Column(db.String(20))
     datacenter_id = db.Column(db.ForeignKey(Datacenter.id))
 
+    def __init__(self, name, type, datacenter_id):
+        self.name = name
+        self.type = type
+
+        datacenter = Datacenter.query.filter_by(id=datacenter_id).first()
+        if not datacenter:
+            raise ValueError("Datacenter with id %d does not exist" % datacenter_id)
+        self.datacenter_id = datacenter_id
+
+    def create(self):
+        db.session.add(self)
+        db.session.commit()
+
+    @staticmethod
+    def get(id):
+        return Node.query.filter_by(id=id).first()
+
     def serialize(self):
         ips = NodeIP.query.filter_by(node_id = self.id).all()
         status = NodeStatus.query.filter_by(node_id = self.id).order_by(desc(NodeStatus.last_update)).first()
@@ -49,6 +66,14 @@ class NodeStatus(db.Model):
     last_update = db.Column(db.DateTime, default=datetime.datetime.now())
     imposed_status = db.Column(db.String(20))
     current_status = db.Column(db.String(20))
+
+    def __init__(self, node_id, imposed_status):
+        self.node_id = node_id
+        self.imposed_status = imposed_status
+
+    def create(self):
+        db.session.add(self)
+        db.session.commit()
 
     def serialize(self):
         return {

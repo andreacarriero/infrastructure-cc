@@ -8,6 +8,26 @@ class Project(db.Model):
     user_id = db.Column(db.ForeignKey(User.id))
     name = db.Column(db.String(100))
 
+    def __init__(self, user_id, name):
+        self.user_id = user_id
+        self.name = name
+
+    def create(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def add_node(self, node_id):
+        node = Node.get(node_id)
+        if not node:
+            raise ValueError("Node with id %d does not exist" % node_id)
+
+        link = ResourceNodeLink(self.id, node_id)
+        link.create()
+
+    @staticmethod
+    def get(id):
+        return Project.query.filter_by(id=id).first()
+
     def serialize(self):
         nodes_links = ResourceNodeLink.query.filter_by(project_id=self.id).all()
 
@@ -22,6 +42,22 @@ class ResourceNodeLink(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     project_id = db.Column(db.ForeignKey(Project.id))
     node_id = db.Column(db.ForeignKey(Node.id))
+
+    def __init__(self, project_id, node_id):
+        project = Project.get(project_id)
+        if not project:
+            raise ValueError("Project with id %d does not exist" % project_id)
+
+        node = Node.get(node_id)
+        if not node:
+            raise ValueError("Node with id %d does not exist" % node_id)
+
+        self.project_id = project_id
+        self.node_id = node_id
+
+    def create(self):
+        db.session.add(self)
+        db.session.commit()
 
     def serialize(self):
         return {
@@ -53,6 +89,17 @@ class ProjectCommandJob(db.Model):
     propagated = db.Column(db.Boolean, default=False)
     propagation_date = db.Column(db.DateTime)
     cmd = db.Column(db.String(5000))
+
+    def __init__(self, project_id, cmd):
+        project = Project.get(project_id)
+        if not project:
+            raise ValueError("Project with id %d does not exist" % project_id)
+        self.project_id = project_id
+        self.cmd = cmd
+
+    def create(self):
+        db.session.add(self)
+        db.session.commit()
 
     def serialize(self):
         return {

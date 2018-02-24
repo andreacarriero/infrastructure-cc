@@ -67,22 +67,21 @@ class NodeResource(Resource):
         parser.add_argument('current_status', type=str)
         args = parser.parse_args()
 
-        node_status = NodeStatus.query.filter_by(node_id = node_id).order_by(desc(NodeStatus.last_update)).first()
-
-        print(node_status.current_status, args.get('current_status'))
-
         if args.get('current_status'):
-            if node_status.current_status == args.get('current_status'):
-                node_status.last_update = datetime.datetime.now()
+            node_status = NodeStatus.query.filter_by(node_id = node_id).order_by(desc(NodeStatus.last_update)).first()
+            if node_status:
+                if node_status.current_status == args.get('current_status'):
+                    node_status.last_update = datetime.datetime.now()
+                    db.session.commit()
+                else:
+                    current_imposed_status = node_status.imposed_status
+                    node_status = NodeStatus(node_id, current_imposed_status)
+                    node_status.current_status = args.get('current_status')
+                    node_status.create()
             else:
-                current_imposed_status = node_status.imposed_status
-                node_status = NodeStatus()
-                node_status.node_id = node_id
-                node_status.imposed_status = current_imposed_status
+                node_status = NodeStatus(node_id, None)
                 node_status.current_status = args.get('current_status')
-                db.session.add(node_status)
-
-        db.session.commit()
+                node_status.create()
 
         return self.get(node_id)
 
