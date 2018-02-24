@@ -28,6 +28,10 @@ class Node(db.Model):
     def get(id):
         return Node.query.filter_by(id=id).first()
 
+    def add_ip(self, ipv, ip, netmask):
+        node_ip = NodeIP(self.id, ipv, ip, netmask)
+        node_ip.create()
+
     def serialize(self):
         ips = NodeIP.query.filter_by(node_id = self.id).all()
         status = NodeStatus.query.filter_by(node_id = self.id).order_by(desc(NodeStatus.last_update)).first()
@@ -47,6 +51,16 @@ class NodeIP(db.Model):
     ipv = db.Column(db.Integer)
     ip = db.Column(db.String(46))
     netmask = db.Column(db.Integer)
+
+    def __init__(self, node_id, ipv, ip, netmask):
+        self.node_id = node_id
+        self.ipv = ipv
+        self.ip = ip
+        self.netmask = netmask
+
+    def create(self):
+        db.session.add(self)
+        db.session.commit()
 
     def serialize(self):
         return {
