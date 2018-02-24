@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Buefy from 'buefy'
+import VueClipboard from 'vue-clipboard2'
 import 'buefy/lib/buefy.css'
 import 'font-awesome/css/font-awesome.css'
 
@@ -11,8 +12,9 @@ import Datacenter from './pages/Datacenter'
 import Nodes from './pages/Nodes'
 import Node from './pages/Node'
 
-Vue.use(VueRouter);
+Vue.use(VueRouter)
 Vue.use(Buefy)
+Vue.use(VueClipboard)
 
 const router = new VueRouter({
     routes: [
