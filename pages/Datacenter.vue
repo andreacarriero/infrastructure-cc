@@ -18,19 +18,11 @@
         <b-table :data="currentDatacenter.nodes">
           <template slot-scope="props">
             <b-table-column field="id" label="ID">{{props.row.id}}</b-table-column>
-            <b-table-column field="name" label="Name">
-              <b-tooltip label="Click to copy">
-                <span v-clipboard:copy="props.row.name">{{props.row.name}}</span>
-              </b-tooltip>
-            </b-table-column>
+            <b-table-column field="name" label="Name"><copy :text="props.row.name"/></b-table-column>
             <b-table-column field="type" label="Type">{{props.row.type}}</b-table-column>
             <b-table-column field="ips" label="IPs">
               <div v-for="ip in props.row.ips" :key="ip.id" attached>
-                <b-tooltip label="Click to copy">
-                  <span v-clipboard:copy="ip.ip">
-                    IPv{{ip.ipv}} <code>{{ip.ip}}/{{ip.netmask}}</code>
-                  </span>
-                </b-tooltip>
+                IPv{{ip.ipv}} <code><copy :text="ip.ip"/>/{{ip.netmask}}</code>
               </div>
             </b-table-column>
             <b-table-column field="status" label="Status">

@@ -2,9 +2,7 @@
   <section>
     <b-loading :active.sync="isLoading"></b-loading>
     <div v-if="currentNode" class="container">
-      <b-tooltip label="Click to copy">
-        <h1 v-clipboard:copy="currentNode.node.name" class="title is-1 has-text-centered">NODE: {{currentNode.node.name}}</h1>
-      </b-tooltip>
+      <h1 class="title is-1 has-text-centered">NODE: <copy :text="currentNode.node.name"/></h1>
       <p class="has-text-centered">
         <b>ID:</b> <code>{{currentNode.node.id}}</code>;
         <b>TYPE:</b> <code>{{currentNode.node.type}}</code>;
@@ -53,11 +51,7 @@
           <tbody>
             <tr v-for="ip in currentNode.node.ips" :key="ip.id">
               <td>IPv{{ip.ipv}}</td>
-              <td>
-                <b-tooltip label="Click to copy">
-                  <span v-clipboard:copy="ip.ip">{{ip.ip}}</span>
-                </b-tooltip>
-              </td>
+              <td><copy :text="ip.ip"/></td>
               <td>{{ip.netmask}}</td>
             </tr>
           </tbody>

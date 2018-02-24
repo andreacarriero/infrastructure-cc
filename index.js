@@ -5,6 +5,8 @@ import VueClipboard from 'vue-clipboard2'
 import 'buefy/lib/buefy.css'
 import 'font-awesome/css/font-awesome.css'
 
+import CopiableText from './components/CopiableText'
+
 import App from './App'
 import Home from './pages/Home'
 import Datacenters from './pages/Datacenters'
@@ -15,6 +17,8 @@ import Node from './pages/Node'
 Vue.use(VueRouter)
 Vue.use(Buefy)
 Vue.use(VueClipboard)
+
+Vue.component('copy', CopiableText)
 
 const router = new VueRouter({
     routes: [
