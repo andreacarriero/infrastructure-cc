@@ -15,17 +15,20 @@ log.info("Connect to database")
 app.config['SQLALCHEMY_DATABASE_URI'] = conf.get('databaseURI')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = conf.get('databaseTrackModifications')
 
-from modules.datacenter.api import app as datacenter_app
-app.register_blueprint(datacenter_app, url_prefix = '/datacenters')
+from modules.datacenter.admin_api import app as datacenter_admin_app
+app.register_blueprint(datacenter_admin_app, url_prefix = '/admin/datacenters')
 
 from modules.node.api import app as node_app
 app.register_blueprint(node_app, url_prefix = '/nodes')
 
-from modules.user.api import app as user_app
-app.register_blueprint(user_app, url_prefix = '/users')
+from modules.node.admin_api import app as node_admin_app
+app.register_blueprint(node_admin_app, url_prefix = '/admin/nodes')
 
-from modules.project.api import app as project_app
-app.register_blueprint(project_app, url_prefix = '/projects')
+from modules.user.admin_api import app as user_admin_app
+app.register_blueprint(user_admin_app, url_prefix = '/admin/users')
+
+from modules.project.admin_api import app as project_admin_app
+app.register_blueprint(project_admin_app, url_prefix = '/admin/projects')
 
 # init app and db
 db.init_app(app)

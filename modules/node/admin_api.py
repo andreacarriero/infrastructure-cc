@@ -15,6 +15,26 @@ log = get_logger(__name__)
 app = Blueprint(__name__, __name__)
 api = Api(app)
 
+class RootResource(Resource):
+    """
+    Manages Nodes
+    """
+
+    def get(self):
+        log.info("Getting all nodes")
+        nodes = Node.query.all()
+        return [node.serialize() for node in nodes]
+
+class IPsResource(Resource):
+    """
+    Manages IPs
+    """
+
+    def get(self):
+        log.info("Getting all IPs")
+        ips = NodeIP.query.all()
+        return [ip.serialize() for ip in ips]
+
 class NodeResource(Resource):
     """
     Manages specific node
@@ -133,6 +153,8 @@ class NodeCommandResource(Resource):
 
         return self.get(node_id, command_id)
 
+api.add_resource(RootResource, '/', endpoint='nodes')
 api.add_resource(NodeResource, '/<int:node_id>', endpoint='node')
 api.add_resource(NodeCommandsResource, '/<int:node_id>/commands/', endpoint='node_commands')
 api.add_resource(NodeCommandResource, '/<int:node_id>/commands/<int:command_id>', endpoint='node_command')
+api.add_resource(IPsResource, '/ips/', endpoint='ips')
