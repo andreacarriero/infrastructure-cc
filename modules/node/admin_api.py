@@ -110,7 +110,7 @@ class NodeCommandResource(Resource):
         log.info("Getting command ID:%d for node ID:%d", command_id, node_id)
         
         node = Node.query.filter_by(id=node_id).first()
-        if not node:
+        if (node_id != 0) and (not node):
             abort(404, "Node not found")
         
         command = NodeCommand.query.filter_by(id=command_id).first()
@@ -122,7 +122,7 @@ class NodeCommandResource(Resource):
             abort(404, "Project Command Job not found")
 
         return {
-            'node': node.serialize(),
+            'node': (lambda node: node.serialize() if node else None)(node),
             'command': command.serialize(),
             'project_command_job': project_command_job.serialize()
         }
