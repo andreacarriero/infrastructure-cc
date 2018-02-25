@@ -57,7 +57,7 @@ export default {
   mounted () {
     // get nodes
     this.areNodesLoading = true
-    HTTP.get('/nodes/')
+    HTTP.get('/admin/nodes/')
     .then(response => {
       this.nodes = response.data
       this.areNodesLoading = false

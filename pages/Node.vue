@@ -111,14 +111,14 @@ export default {
   mounted () {
     // get node
     this.isCurrentNodeLoading = true
-    HTTP.get('/nodes/' + this.currentNodeID)
+    HTTP.get('/admin/nodes/' + this.currentNodeID)
     .then(response => {
       this.currentNode = response.data
       this.isCurrentNodeLoading = false
 
       // get datacenter
       this.isDatacenterLoading = true
-      HTTP.get('/datacenters/' + response.data.node.datacenter_id)
+      HTTP.get('/admin/datacenters/' + response.data.node.datacenter_id)
       .then(response => {
         this.datacenter = response.data
         this.isDatacenterLoading = false
@@ -139,7 +139,7 @@ export default {
     getUserName (user_id, project_id) {
       var element = document.querySelector('#project-' + project_id)
       if (element) {
-        HTTP.get('/users/' + user_id)
+        HTTP.get('/admin/users/' + user_id)
         .then(response => {
           let user = response.data.user
           let userName = user.username

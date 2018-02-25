@@ -49,7 +49,7 @@ export default {
   mounted () {
     // get datacenters
     this.areDatacentersLoading = true
-    HTTP.get('/datacenters/')
+    HTTP.get('/admin/datacenters/')
     .then(response => {
       this.datacenters = response.data
       this.areDatacentersLoading = false

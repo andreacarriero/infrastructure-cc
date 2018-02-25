@@ -65,7 +65,7 @@ export default {
   mounted () {
     // get current datacenter
     this.isCurrentDatacenterLoading = true
-    HTTP.get('/datacenters/' + this.currentDatacenterID)
+    HTTP.get('/admin/datacenters/' + this.currentDatacenterID)
     .then(response => {
       this.currentDatacenter = response.data
       this.isCurrentDatacenterLoading = false
