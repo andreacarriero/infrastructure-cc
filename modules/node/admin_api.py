@@ -97,7 +97,7 @@ class NodeCommandsResource(Resource):
         if not node:
             abort(404)
         
-        commands = NodeCommand.query.filter_by(node_id=node_id, status=NodeCommand.STATUS_SENDING).all()
+        commands = NodeCommand.query.filter_by(node_id=node_id).all()
 
         return [command.serialize() for command in commands]
 
