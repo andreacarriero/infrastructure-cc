@@ -9,6 +9,8 @@ import CopiableText from './components/CopiableText'
 import Username from './components/Username'
 import Nodename from './components/Nodename'
 import NodesTable from './components/NodesTable'
+import CommandsTable from './components/CommandsTable'
+import TimeSince from './components/TimeSince'
 
 import App from './App'
 import Home from './pages/Home'
@@ -27,6 +29,8 @@ Vue.component('copy', CopiableText)
 Vue.component('username', Username)
 Vue.component('nodename', Nodename)
 Vue.component('nodestable', NodesTable)
+Vue.component('commandstable', CommandsTable)
+Vue.component('timesince', TimeSince)
 
 const router = new VueRouter({
     routes: [

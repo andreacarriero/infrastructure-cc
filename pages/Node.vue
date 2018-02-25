@@ -31,7 +31,7 @@
 
             <tr>
               <th>Last Update</th>
-              <td>{{currentNode.node.status.last_update | timeSince}} ago<br>{{currentNode.node.status.last_update}}</td>
+              <td><timesince :time="currentNode.node.status.last_update" /></td>
             </tr>
           </tbody>
         </table>
@@ -99,6 +99,12 @@
         </b-table>
       </div>
 
+      <div>
+        <br><br>
+        <h2 class="title is-2 has-text-centered">NODE COMMANDS</h2>
+        <commandstable :commands="currentNodeCommands" :areCommandsLoading="areCurrentNodeCommandsLoading" />
+      </div>
+
     </div>
   </section>
 </template>
@@ -113,7 +119,9 @@ export default {
         currentNode: null,
         isCurrentNodeLoading: true,
         datacenter: null,
-        isDatacenterLoading: true
+        isDatacenterLoading: true,
+        currentNodeCommands: [],
+        areCurrentNodeCommandsLoading: true
     }
   },
 
@@ -136,38 +144,22 @@ export default {
     .catch(e => {
       console.log(e)
     })
+
+    // get node commands
+    this.areCurrentNodeCommandsLoading = true
+    HTTP.get('/admin/nodes/' + this.currentNodeID + '/commands')
+    .then(response => {
+      this.currentNodeCommands = response.data
+      this.areCurrentNodeCommandsLoading = false
+    })
+    .catch(e => {
+      console.log(e)
+    })
   },
 
   computed: {
     isLoading () {
       return this.isCurrentNodeLoading
-    }
-  },
-
-  filters: {
-    timeSince (date) {
-      var seconds = Math.floor((new Date() - new Date(date)) / 1000);
-      var interval = Math.floor(seconds / 31536000);
-      if (interval > 1) {
-        return interval + " years";
-      }
-      interval = Math.floor(seconds / 2592000);
-      if (interval > 1) {
-        return interval + " months";
-      }
-      interval = Math.floor(seconds / 86400);
-      if (interval > 1) {
-        return interval + " days";
-      }
-      interval = Math.floor(seconds / 3600);
-      if (interval > 1) {
-        return interval + " hours";
-      }
-      interval = Math.floor(seconds / 60);
-      if (interval > 1) {
-        return interval + " minutes";
-      }
-      return Math.floor(seconds) + " seconds";
     }
   }
 }

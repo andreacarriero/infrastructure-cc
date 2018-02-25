@@ -25,9 +25,7 @@
           </div>
         </b-table-column>
         <b-table-column field="lastUpdate" label="Last Update">
-          <b-tooltip v-if="props.row.status" :label="props.row.status.last_update" dashed>
-            {{props.row.status.last_update | timeSince}} ago
-          </b-tooltip>
+          <timesince v-if="props.row.status" :time="props.row.status.last_update" />
         </b-table-column>
 
         <b-table-column field="actions" label="Actions">
