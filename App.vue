@@ -16,6 +16,7 @@
       <div class="navbar-start">
         <router-link :to="{name: 'datacenters'}" class="navbar-item">Datacenters</router-link>
         <router-link :to="{name: 'nodes'}" class="navbar-item">Nodes</router-link>
+        <router-link :to="{name: 'projects'}" class="navbar-item">Projects</router-link>
       </div>
 
       <div class="navbar-end">

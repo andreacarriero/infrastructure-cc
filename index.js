@@ -6,6 +6,9 @@ import 'buefy/lib/buefy.css'
 import 'font-awesome/css/font-awesome.css'
 
 import CopiableText from './components/CopiableText'
+import Username from './components/Username'
+import Nodename from './components/Nodename'
+import NodesTable from './components/NodesTable'
 
 import App from './App'
 import Home from './pages/Home'
@@ -13,12 +16,17 @@ import Datacenters from './pages/Datacenters'
 import Datacenter from './pages/Datacenter'
 import Nodes from './pages/Nodes'
 import Node from './pages/Node'
+import Projects from './pages/Projects'
+import Project from './pages/Project'
 
 Vue.use(VueRouter)
 Vue.use(Buefy)
 Vue.use(VueClipboard)
 
 Vue.component('copy', CopiableText)
+Vue.component('username', Username)
+Vue.component('nodename', Nodename)
+Vue.component('nodestable', NodesTable)
 
 const router = new VueRouter({
     routes: [
@@ -46,6 +54,16 @@ const router = new VueRouter({
             path: '/nodes/:id',
             name: 'node',
             component: Node
+        },
+        {
+            path: '/projects',
+            name: 'projects',
+            component: Projects
+        },
+        {
+            path: '/projects/:id',
+            name: 'project',
+            component: Project
         }
     ]
 })

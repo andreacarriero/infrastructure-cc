@@ -15,37 +15,7 @@
         <br><br>
 
         <h2 class="title is-2 has-text-centered">NODES</h2> 
-        <b-table :data="currentDatacenter.nodes">
-          <template slot-scope="props">
-            <b-table-column field="id" label="ID">{{props.row.id}}</b-table-column>
-            <b-table-column field="name" label="Name"><copy :text="props.row.name"/></b-table-column>
-            <b-table-column field="type" label="Type">{{props.row.type}}</b-table-column>
-            <b-table-column field="ips" label="IPs">
-              <div v-for="ip in props.row.ips" :key="ip.id" attached>
-                IPv{{ip.ipv}} <code><copy :text="ip.ip"/>/{{ip.netmask}}</code>
-              </div>
-            </b-table-column>
-            <b-table-column field="status" label="Status">
-              <div v-if="props.row.status">
-                <span v-if="props.row.status.imposed_status == props.row.status.current_status">
-                  <span v-html="colorStatus(props.row.status.current_status)"/>
-                </span>
-                <span v-if="props.row.status.imposed_status != props.row.status.current_status">
-                  {{props.row.status.imposed_status}} --> {{props.row.status.current_status}}
-                </span>
-              </div>
-            </b-table-column>
-            <b-table-column field="lastUpdate" label="Last Update">
-              <b-tooltip v-if="props.row.status" :label="props.row.status.last_update" dashed>
-                {{props.row.status.last_update | timeSince}} ago
-              </b-tooltip>
-            </b-table-column>
-
-            <b-table-column field="actions" label="Actions">
-              <router-link :to="{name: 'node', params: {id: props.row.id}}" class="button is-small">Open</router-link>
-            </b-table-column>
-          </template>
-        </b-table>
+        <nodestable :nodes="currentDatacenter.nodes" :areNodesLoading="false" />
     </div>  
   </section>
 </template>
