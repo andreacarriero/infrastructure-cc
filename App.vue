@@ -17,6 +17,7 @@
         <router-link :to="{name: 'datacenters'}" class="navbar-item">Datacenters</router-link>
         <router-link :to="{name: 'nodes'}" class="navbar-item">Nodes</router-link>
         <router-link :to="{name: 'projects'}" class="navbar-item">Projects</router-link>
+        <router-link :to="{name: 'users'}" class="navbar-item">Users</router-link>
       </div>
 
       <div class="navbar-end">

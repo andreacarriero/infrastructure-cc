@@ -11,6 +11,7 @@ import Nodename from './components/Nodename'
 import NodesTable from './components/NodesTable'
 import CommandsTable from './components/CommandsTable'
 import TimeSince from './components/TimeSince'
+import ProjectsTable from './components/ProjectsTable'
 
 import App from './App'
 import Home from './pages/Home'
@@ -20,6 +21,8 @@ import Nodes from './pages/Nodes'
 import Node from './pages/Node'
 import Projects from './pages/Projects'
 import Project from './pages/Project'
+import Users from './pages/Users'
+import User from './pages/User'
 
 Vue.use(VueRouter)
 Vue.use(Buefy)
@@ -31,6 +34,7 @@ Vue.component('nodename', Nodename)
 Vue.component('nodestable', NodesTable)
 Vue.component('commandstable', CommandsTable)
 Vue.component('timesince', TimeSince)
+Vue.component('projectstable', ProjectsTable)
 
 const router = new VueRouter({
     routes: [
@@ -68,6 +72,16 @@ const router = new VueRouter({
             path: '/projects/:id',
             name: 'project',
             component: Project
+        },
+        {
+            path: '/users',
+            name: 'users',
+            component: Users
+        },
+        {
+            path: '/users/:id',
+            name: 'user',
+            component: User
         }
     ]
 })
