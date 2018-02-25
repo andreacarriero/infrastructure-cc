@@ -3,7 +3,7 @@ from flask import Blueprint, abort
 from flask_restful import Api, Resource, reqparse
 
 from toolbox.logger import get_logger
-from modules.project.models import Project, ResourceNodeLink
+from modules.project.models import Project, ResourceNodeLink, ProjectCommandJob
 from modules.user.models import User
 from modules.node.models import Node
 
@@ -36,11 +36,13 @@ class ProjectResource(Resource):
 
         user = User.query.filter_by(id=project.user_id).first()
         nodes_links = ResourceNodeLink.query.filter_by(project_id=project_id).all()
+        project_command_jobs = ProjectCommandJob.query.filter_by(project_id=project_id).all()
 
         return {
             'project': project.serialize(),
             'user': user.serialize(),
-            'nodes': [link.serialize_node() for link in nodes_links]
+            'nodes': [link.serialize_node() for link in nodes_links],
+            'project_command_jobs': [job.serialize() for job in project_command_jobs]
         }
 
 api.add_resource(RootResource, '/', endpoint='projects')
