@@ -21,12 +21,28 @@
           <tbody>
             <tr>
               <th>Imposed Status</th>
-              <td>{{currentNode.node.status.imposed_status}}</td>
+              <td>
+                <b-tag v-if="currentNode.node.status.imposed_status == 'online'" type="is-success">ONLINE</b-tag>
+                <b-tag v-if="currentNode.node.status.imposed_status == 'offline'" type="is-danger">OFFLINE</b-tag>
+                <b-tag
+                  v-if="currentNode.node.status.imposed_status != 'online' && currentNode.node.status.imposed_status != 'offline'"
+                  type='is-warning'>
+                  {{currentNode.node.status.imposed_status}}
+                </b-tag>
+              </td>
             </tr>
 
             <tr>
               <th>Current Status</th>
-              <td>{{currentNode.node.status.current_status}}</td>
+              <td>
+                <b-tag v-if="currentNode.node.status.current_status == 'online'" type="is-success">ONLINE</b-tag>
+                <b-tag v-if="currentNode.node.status.current_status == 'offline'" type="is-danger">OFFLINE</b-tag>
+                <b-tag
+                  v-if="currentNode.node.status.current_status != 'online' && currentNode.node.status.current_status != 'offline'"
+                  type='is-warning'>
+                  {{currentNode.node.status.current_status}}
+                </b-tag>
+              </td>
             </tr>
 
             <tr>
