@@ -20,6 +20,7 @@
         <router-link :to="{name: 'users'}" class="navbar-item">Users</router-link>
       </div>
 
+      <!-- start navbar end
       <div class="navbar-end">
         <div class="navbar-item">
           <div class="field is-grouped">
@@ -34,6 +35,7 @@
           </div>
         </div>
       </div>
+      end navbar end -->
     </div>
   </nav>
   <!-- end navbar -->
