@@ -32,6 +32,14 @@
           <router-link :to="{name: 'node', params: {id: props.row.id}}" class="button is-small">Open</router-link>
         </b-table-column>
       </template>
+
+      <template slot="empty">
+        <section class="section">
+          <div class="content has-text-grey has-text-centered">
+            <p><b>No nodes to display.</b></p>
+          </div>
+        </section>
+      </template>
   </b-table>
 </template>
 

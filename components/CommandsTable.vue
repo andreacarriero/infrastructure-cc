@@ -46,6 +46,14 @@
           <a @click="expand(props.row.id)" class="button is-small">Expand</a>
         </b-table-column>
       </template>
+
+      <template slot="empty">
+        <section class="section">
+          <div class="content has-text-grey has-text-centered">
+            <p><b>No commands to display.</b></p>
+          </div>
+        </section>
+      </template>
     </b-table>
   </div>
 </template>

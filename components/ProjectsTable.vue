@@ -38,6 +38,14 @@
       </b-table-column>
 
     </template>
+
+    <template slot="empty">
+        <section class="section">
+          <div class="content has-text-grey has-text-centered">
+            <p><b>No projects to display.</b></p>
+          </div>
+        </section>
+      </template>
   </b-table>
 </template>
 
