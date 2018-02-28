@@ -1,0 +1,23 @@
+{
+    "name": "cc_admin_ui",
+    "version": "1.0.0",
+    "description": "Simple multi-datacenter infrastructure overview and monitoring dashboard",
+    "main": "index.js",
+    "dependencies": {
+      "axios": "^0.18.0",
+      "buefy": "^0.6.3",
+      "font-awesome": "^4.7.0",
+      "node-sass": "^4.7.2",
+      "poi": "^9.6.13",
+      "sass-loader": "^6.0.6",
+      "vue-clipboard2": "0.0.8",
+      "vue-router": "^3.0.1"
+    },
+    "devDependencies": {},
+    "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "Andrea Carriero <info@andreacarriero.com>",
+    "license": "MIT",
+    "keywords": []
+  }
