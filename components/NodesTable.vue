@@ -16,12 +16,7 @@
         </b-table-column>
         <b-table-column field="status" label="Status">
           <div v-if="props.row.status">
-            <span v-if="props.row.status.imposed_status == props.row.status.current_status">
-              <span v-html="colorStatus(props.row.status.current_status)"/>
-            </span>
-            <span v-if="props.row.status.imposed_status != props.row.status.current_status">
-              {{props.row.status.imposed_status}} --> {{props.row.status.current_status}}
-            </span>
+            <span v-html="colorStatus(props.row.status.current_status)"/>
           </div>
         </b-table-column>
         <b-table-column field="lastUpdate" label="Last Update">
