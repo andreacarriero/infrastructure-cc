@@ -1,7 +1,10 @@
 <template>
   <section>
-    <h2 class="title is-2 has-text-centered">NODES WITH ERRORS</h2>
-    <nodestable :nodes="notOnlineNodes" :areNodesLoading="areNodesLoading" />
+    <div class="container">
+      <h1 class="title is-1 has-text-centered">[COMPANY NAME]</h1>
+      <h2 class="title is-2 has-text-centered">NODES WITH ERRORS</h2>
+      <nodestable :nodes="notOnlineNodes" :areNodesLoading="areNodesLoading" />
+    </div>
   </section>
 </template>
 
